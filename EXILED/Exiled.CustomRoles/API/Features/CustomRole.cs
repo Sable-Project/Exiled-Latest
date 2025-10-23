@@ -43,8 +43,6 @@ namespace Exiled.CustomRoles.API.Features
         // used in AddRole and InternalChangingRole
         private static bool skipChangingCheck;
 
-        private static Dictionary<Type, CustomRole?> typeLookupTable = new();
-
         private static Dictionary<string, CustomRole?> stringLookupTable = new();
 
         private static Dictionary<uint, CustomRole?> idLookupTable = new();
@@ -199,18 +197,6 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="CustomRole"/> by type.
-        /// </summary>
-        /// <param name="t">The <see cref="Type"/> to get.</param>
-        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
-        public static CustomRole? Get(Type t)
-        {
-            if (!typeLookupTable.ContainsKey(t))
-                typeLookupTable.Add(t, Registered?.FirstOrDefault(r => r.GetType() == t));
-            return typeLookupTable[t];
-        }
-
-        /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
@@ -248,20 +234,6 @@ namespace Exiled.CustomRoles.API.Features
                 throw new ArgumentNullException(nameof(name));
 
             customRole = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
-
-            return customRole is not null;
-        }
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomRole"/> by name.
-        /// </summary>
-        /// <param name="t">The <see cref="Type"/> of the role to get.</param>
-        /// <param name="customRole">The custom role.</param>
-        /// <returns>True if the role exists.</returns>
-        /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
-        public static bool TryGet(Type t, out CustomRole? customRole)
-        {
-            customRole = Get(t);
 
             return customRole is not null;
         }
@@ -523,7 +495,6 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void Init()
         {
             idLookupTable.Add(Id, this);
-            typeLookupTable.Add(GetType(), this);
             stringLookupTable.Add(Name, this);
             SubscribeEvents();
         }
@@ -534,7 +505,6 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void Destroy()
         {
             idLookupTable.Remove(Id);
-            typeLookupTable.Remove(GetType());
             stringLookupTable.Remove(Name);
             UnsubscribeEvents();
         }
