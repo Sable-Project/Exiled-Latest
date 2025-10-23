@@ -56,7 +56,10 @@
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-        <PostBuildEvent>if not "$(EXILED_DEV_PLUGINAPI_REFERENCE)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_PLUGINAPI_REFERENCE)\"</PostBuildEvent>
+        <PostBuildEvent>
+            copy /Y "$(AssemblyName).dll" "C:\Users\HP\OneDrive\Рабочий стол\SCP-SL-LATEST\Plugins"
+            copy /Y "$(AssemblyName).dll" "C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References"
+        </PostBuildEvent>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
         <PostBuildEvent>if [[ ! -z "$EXILED_DEV_PLUGINAPI_REFERENCE" ]]; then cp "$(OutputPath)$(AssemblyName).dll" "$EXILED_DEV_PLUGINAPI_REFERENCE/"; fi</PostBuildEvent>
