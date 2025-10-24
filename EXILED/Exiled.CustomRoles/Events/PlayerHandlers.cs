@@ -46,10 +46,7 @@ namespace Exiled.CustomRoles.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.WaitingForPlayers"/>
         internal void OnWaitingForPlayers()
         {
-            foreach (CustomRole role in CustomRole.Registered)
-            {
-                role.SpawnedPlayers = 0;
-            }
+            Extensions.InternalPlayerToCustomRoles.Clear();
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.SpawningRagdoll"/>
@@ -59,67 +56,6 @@ namespace Exiled.CustomRoles.Events
             {
                 ev.IsAllowed = false;
                 plugin.StopRagdollPlayers.Remove(ev.Player);
-            }
-        }
-
-        /// <inheritdoc cref="Exiled.Events.Handlers.Player.Spawning"/>
-        internal void OnSpawned(SpawnedEventArgs ev)
-        {
-            if (!ValidSpawnReasons.Contains(ev.Reason) || ev.Player.HasAnyCustomRole())
-            {
-                return;
-            }
-
-            float totalChance = 0f;
-            List<CustomRole> eligibleRoles = new(8);
-
-            foreach (CustomRole role in CustomRole.Registered)
-            {
-                if (role.Role == ev.Player.Role.Type && !role.IgnoreSpawnSystem && role.SpawnChance > 0 && !role.Check(ev.Player) && (role.SpawnProperties is null || role.SpawnedPlayers < role.SpawnProperties.Limit))
-                {
-                    eligibleRoles.Add(role);
-                    totalChance += role.SpawnChance;
-                }
-            }
-
-            if (eligibleRoles.Count == 0)
-            {
-                return;
-            }
-
-            float lotterySize = Math.Max(100f, totalChance);
-            float randomRoll = (float)Loader.Loader.Random.NextDouble() * lotterySize;
-
-            if (randomRoll >= totalChance)
-            {
-                return;
-            }
-
-            foreach (CustomRole candidateRole in eligibleRoles)
-            {
-                if (randomRoll >= candidateRole.SpawnChance)
-                {
-                    randomRoll -= candidateRole.SpawnChance;
-                    continue;
-                }
-
-                if (candidateRole.SpawnProperties is null)
-                {
-                    candidateRole.AddRole(ev.Player);
-                    break;
-                }
-
-                int newSpawnCount = candidateRole.SpawnedPlayers++;
-                if (newSpawnCount <= candidateRole.SpawnProperties.Limit)
-                {
-                    candidateRole.AddRole(ev.Player);
-                    break;
-                }
-                else
-                {
-                    candidateRole.SpawnedPlayers--;
-                    randomRoll -= candidateRole.SpawnChance;
-                }
             }
         }
     }

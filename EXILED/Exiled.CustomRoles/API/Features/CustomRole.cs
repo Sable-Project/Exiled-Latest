@@ -40,9 +40,6 @@ namespace Exiled.CustomRoles.API.Features
     {
         private const float AddRoleDelay = 0.25f;
 
-        // used in AddRole and InternalChangingRole
-        private static bool skipChangingCheck;
-
         private static Dictionary<string, CustomRole?> stringLookupTable = new();
 
         private static Dictionary<uint, CustomRole?> idLookupTable = new();
@@ -124,34 +121,9 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool RemovalKillsPlayer { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether players keep this role when they die.
-        /// </summary>
-        public virtual bool KeepRoleOnDeath { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating the Spawn Chance of the Role.
-        /// </summary>
-        public virtual float SpawnChance { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the spawn system is ignored for this role.
-        /// </summary>
-        public virtual bool IgnoreSpawnSystem { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
-        /// </summary>
-        public virtual bool KeepRoleOnChangingRole { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating broadcast that will be shown to the player.
         /// </summary>
         public virtual Broadcast Broadcast { get; set; } = new Broadcast();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether players will receive a message for getting a custom item, when gaining it through the inventory config for this role.
-        /// </summary>
-        public virtual bool DisplayCustomItemMessages { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
@@ -177,12 +149,6 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets a <see cref="string"/> for the ability usage help sent to players in the player console.
         /// </summary>
         public virtual string AbilityUsage { get; set; } = "Enter \".special\" in the console to use your ability. If you have multiple abilities, you can use this command to cycle through them, or specify the one to use with \".special ROLENAME AbilityNum\"";
-
-        /// <summary>
-        /// Gets or sets the number of players that naturally spawned with this custom role.
-        /// </summary>
-        [YamlIgnore]
-        public int SpawnedPlayers { get; set; }
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
@@ -520,32 +486,25 @@ namespace Exiled.CustomRoles.API.Features
 
             if (Role != RoleTypeId.None)
             {
-                try
+                if (KeepPositionOnSpawn)
                 {
-                    skipChangingCheck = true;
-                    if (KeepPositionOnSpawn)
-                    {
-                        if (KeepInventoryOnSpawn)
-                            player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
-                        else
-                            player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
-                    }
+                    if (KeepInventoryOnSpawn)
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
                     else
-                    {
-                        if (KeepInventoryOnSpawn && player.IsAlive)
-                            player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
-                        else
-                            player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
-                    }
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
                 }
-                finally
+                else
                 {
-                    skipChangingCheck = false;
+                    if (KeepInventoryOnSpawn && player.IsAlive)
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
+                    else
+                        player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
                 }
             }
 
             player.UniqueRole = Name;
             TrackedPlayers.Add(player);
+            API.Extensions.InternalPlayerToCustomRoles[player] = this;
 
             Timing.CallDelayed(
                 AddRoleDelay,
@@ -647,8 +606,10 @@ namespace Exiled.CustomRoles.API.Features
         {
             if (!TrackedPlayers.Contains(player))
                 return;
+
             Log.Debug($"{Name}: Removing role from {player.Nickname}");
             TrackedPlayers.Remove(player);
+            API.Extensions.InternalPlayerToCustomRoles.Remove(player);
             player.CustomInfo = string.Empty;
             player.InfoArea |= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
             player.Scale = Vector3.one;
@@ -819,8 +780,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             if (CustomItem.TryGet(itemName, out CustomItem? customItem))
             {
-                customItem?.Give(player, DisplayCustomItemMessages);
-
+                customItem?.Give(player, false);
                 return true;
             }
 
@@ -976,10 +936,8 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
         {
-            if (!skipChangingCheck && ev.IsAllowed && ev.Reason != SpawnReason.Destroyed && Check(ev.Player) && ((ev.NewRole == RoleTypeId.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleTypeId.Spectator && !KeepRoleOnChangingRole)))
+            if (ev.IsAllowed && ev.Reason != SpawnReason.Destroyed && Check(ev.Player))
                 RemoveRole(ev.Player);
-            else
-                skipChangingCheck = false;
         }
 
         private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
