@@ -23,17 +23,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="Assembly-CSharp" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll" Private="false" />
-        <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
-        <Reference Include="LabApi" HintPath="$(EXILED_REFERENCES)\LabApi.dll" Private="false" />
-        <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll" Private="false" />
-        <Reference Include="UnityEngine.AudioModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.AudioModule.dll" Private="false" />
-        <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
-        <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
+        <Reference Include="Assembly-CSharp" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Assembly-CSharp-Publicized.dll" Private="false" />
+        <Reference Include="Assembly-CSharp-firstpass" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Assembly-CSharp-firstpass.dll" Private="false" />
+        <Reference Include="LabApi" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\LabApi.dll" Private="false" />
+        <Reference Include="NorthwoodLib" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\NorthwoodLib.dll" Private="false" />
+        <Reference Include="UnityEngine.AudioModule" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.AudioModule.dll" Private="false" />
+        <Reference Include="UnityEngine.CoreModule" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.CoreModule.dll" Private="false" />
+        <Reference Include="Mirror" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Mirror.dll" Private="false" />
         <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
         <Reference Include="System.Net.Http" />
-        <Reference Include="Mono.Posix" HintPath="$(EXILED_REFERENCES)\Mono.Posix.dll" Private="false" />
-        <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
+        <Reference Include="Mono.Posix" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Mono.Posix.dll" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
     <ItemGroup>
