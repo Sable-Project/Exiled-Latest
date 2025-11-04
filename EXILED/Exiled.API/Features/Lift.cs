@@ -79,11 +79,6 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Doors.ElevatorDoor> Doors => internalDoorsList.Select(x => Door.Get<Doors.ElevatorDoor>(x)).ToList();
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
-        /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(x => RelativeBounds.Contains(x.Position));
-
-        /// <summary>
         /// Gets the lift's name.
         /// </summary>
         public string Name => Group.ToString();
@@ -129,12 +124,7 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.Bounds"/> representing the space inside the lift.
         /// </summary>
         [Obsolete("It's now necessary to use RelativeBounds instead", true)]
-        public Bounds Bounds => Base.WorldspaceBounds.Bounds;
-
-        /// <summary>
-        /// Gets the <see cref="Utils.RelativeBounds"/> representing the space inside the lift.
-        /// </summary>
-        public RelativeBounds RelativeBounds => Base.WorldspaceBounds;
+        public Bounds Bounds => Base.WorldspaceBounds;
 
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
@@ -253,13 +243,6 @@ namespace Exiled.API.Features
         public static Lift Get(GameObject gameObject) => Get(lift => lift.GameObject == gameObject).FirstOrDefault();
 
         /// <summary>
-        /// Gets the <see cref="Lift"/> belonging to the <see cref="Vector3"/>, if any.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/>.</param>
-        /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static Lift Get(Vector3 position) => Get(lift => lift.RelativeBounds.Contains(position)).FirstOrDefault();
-
-        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> filtered based on a predicate.
         /// </summary>
         /// <param name="predicate">The condition to satify.</param>
@@ -311,13 +294,6 @@ namespace Exiled.API.Features
                 }
             }
         }
-
-        /// <summary>
-        /// Returns whether the provided <see cref="Vector3">position</see> is inside the lift.
-        /// </summary>
-        /// <param name="point">The position.</param>
-        /// <returns><see langword="true"/> if the point is inside the elevator. Otherwise, <see langword="false"/>.</returns>
-        public bool IsInElevator(Vector3 point) => RelativeBounds.Contains(point);
 
         /// <summary>
         /// Returns the Lift in a human-readable format.

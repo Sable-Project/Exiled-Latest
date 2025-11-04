@@ -1062,11 +1062,6 @@ namespace Exiled.API.Features
         public RoomLevelName? LevelName => CurrentRoom?.LevelName;
 
         /// <summary>
-        /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
-        /// </summary>
-        public Lift Lift => Lift.Get(Position);
-
-        /// <summary>
         /// Gets all currently active <see cref="StatusEffectBase"> effects</see>.
         /// </summary>
         /// <seealso cref="EnableEffect(EffectType, float, bool)"/>

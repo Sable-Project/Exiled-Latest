@@ -22,6 +22,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>..\..\..\..\Exiled-Latest-References\0Harmony.dll</HintPath>
+        </Reference>
         <Reference Include="Assembly-CSharp">
           <HintPath>C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Assembly-CSharp-Publicized.dll</HintPath>
         </Reference>
@@ -31,11 +34,16 @@
         <Reference Include="Pooling" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Pooling.dll" Private="false" />
         <Reference Include="Mirror" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Mirror.dll" Private="false" />
         <Reference Include="NorthwoodLib" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\NorthwoodLib.dll" Private="false" />
+        <Reference Include="SemanticVersioning">
+          <HintPath>..\..\..\..\Exiled-Latest-References\SemanticVersioning.dll</HintPath>
+        </Reference>
         <Reference Include="Snake" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Snake.dll" Private="false" />
+        <Reference Include="System.ValueTuple">
+          <HintPath>..\..\..\..\Exiled-Latest-References\System.ValueTuple.dll</HintPath>
+        </Reference>
         <Reference Include="Unity.TextMeshPro" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\Unity.TextMeshPro.dll" Private="false" />
         <Reference Include="UnityEngine" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.dll" Private="false" />
         <Reference Include="UnityEngine.CoreModule" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.CoreModule.dll" Private="false" />
-        <Reference Include="UnityEngine.ParticleSystemModule" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.ParticleSystemModule.dll" Private="false" />
         <Reference Include="UnityEngine.PhysicsModule" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.PhysicsModule.dll" Private="false" />
         <Reference Include="UnityEngine.AudioModule" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.AudioModule.dll" Private="false" />
         <Reference Include="UnityEngine.UI" HintPath="C:\Users\HP\OneDrive\Рабочий стол\Exiled-Latest-References\UnityEngine.UI.dll" Private="false" />
